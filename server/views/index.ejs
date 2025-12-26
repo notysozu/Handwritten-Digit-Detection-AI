@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Handwritten Digit Detection AI</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background: #0f172a;
+        color: #e5e7eb;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+      .container {
+        background: #020617;
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+        width: 320px;
+      }
+      canvas {
+        background: white;
+        border-radius: 6px;
+        cursor: crosshair;
+      }
+      button {
+        margin-top: 10px;
+        padding: 8px 14px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        background: #2563eb;
+        color: white;
+        font-size: 14px;
+      }
+      button:hover {
+        background: #1d4ed8;
+      }
+      .result {
+        margin-top: 15px;
+        font-size: 20px;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>Digit Detection</h2>
+
+      <canvas id="canvas" width="280" height="280"></canvas>
+
+      <div>
+        <button onclick="clearCanvas()">Clear</button>
+        <button onclick="predictDigit()">Predict</button>
+      </div>
+      <div class="result" id="result">Draw a digit (0–9)</div>
+    </div>
+
+    <script>
+      const canvas = document.getElementById("canvas");
+      const ctx = canvas.getContext("2d");
+      const resultDiv = document.getElementById("result");
+
+      let drawing = false;
+
+      ctx.fillStyle = "white";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.lineWidth = 18;
+      ctx.lineCap = "round";
+      ctx.strokeStyle = "black";
+
+      canvas.addEventListener("mousedown", () => (drawing = true));
+      canvas.addEventListener("mouseup", () => (drawing = false));
+      canvas.addEventListener("mouseleave", () => (drawing = false));
+
+      canvas.addEventListener("mousemove", (e) => {
+        if (!drawing) return;
+        const rect = canvas.getBoundingClientRect();
+        ctx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(e.clientX - rect.left, e.clientY - rect.top);
+      });
+
+      function clearCanvas() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = "white";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.beginPath();
+        resultDiv.innerText = "Draw a digit (0–9)";
+      }
+
+      async function predictDigit() {
+        const imageData = canvas.toDataURL("image/png");
+
+        const response = await fetch("/api/detect-digit", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ image: imageData }),
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+          resultDiv.innerText = "Detected Digit: " + data.digit;
+        } else {
+          resultDiv.innerText = "Detection failed";
+        }
+      }
+      let lastImage = null;
+let lastPrediction = null;
+
+async function predictDigit() {
+  lastImage = canvas.toDataURL("image/png");
+
+  const response = await fetch("/api/detect-digit", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ image: lastImage })
+  });
+
+  const data = await response.json();
+
+  if (data.success) {
+    lastPrediction = data.digit;
+    resultDiv.innerText = "Detected Digit: " + data.digit;
+  }
+}
+
+async function approve() {
+  if (!lastImage || lastPrediction === null) return;
+
+  await fetch("/api/save-sample", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      image: lastImage,
+      label: lastPrediction
+    })
+  });
+
+  alert("Saved as correct sample ✅");
+}
+
+async function correct() {
+  const correctDigit = document.getElementById("correctDigit").value;
+  if (!lastImage || correctDigit === "") return;
+
+  await fetch("/api/save-sample", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      image: lastImage,
+      label: correctDigit
+    })
+  });
+
+  alert("Saved corrected sample ✏️");
+}
+    </script>
+  </body>
+</html>

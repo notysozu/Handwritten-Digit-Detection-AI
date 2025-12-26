@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "@tensorflow/tfjs-node": "^4.22.0",
+    "canvas": "^3.2.0",
+    "ejs": "^3.1.10",
+    "express": "^5.2.1",
+    "mnist": "^1.1.0"
+  }
+}
