@@ -30,7 +30,7 @@ Users draw a digit (0–9) on a canvas, and the system predicts the digit locall
 ---
 
 ## 📁 Project Structure
-
+```
 handwritten-digit-ai/
 └── server/
 ├── index.js
@@ -40,7 +40,7 @@ handwritten-digit-ai/
 ├── model/ # trained model saved here
 ├── views/
 └── public/
-
+```
 ---
 
 ## ⚙️ Installation
