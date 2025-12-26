@@ -47,7 +47,7 @@ handwritten-digit-ai/
 
 ### 1️⃣ Clone the repository
 ```bash
-git clone <repo-url>
+git clone https://github.com/notysozu/Handwritten-Digit-Detection-AI.git
 cd handwritten-digit-ai
 ```
 
