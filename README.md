@@ -1,4 +1,4 @@
-# Handwritten Digit Detection AI 🧠✍️
+# Handwritten Digit Detection AI
 
 An **offline handwritten digit recognition system** built using **Node.js, Express, EJS, and TensorFlow.js**.  
 Users draw a digit (0–9) on a canvas, and the system predicts the digit locally using a CNN trained on the **MNIST dataset**.
@@ -9,7 +9,7 @@ Users draw a digit (0–9) on a canvas, and the system predicts the digit locall
 
 ---
 
-## 🚀 Features
+## Features
 - Offline handwritten digit detection
 - CNN trained on MNIST dataset
 - Canvas-based drawing interface
@@ -19,7 +19,7 @@ Users draw a digit (0–9) on a canvas, and the system predicts the digit locall
 
 ---
 
-## 🛠 Tech Stack
+## Tech Stack
 - Node.js
 - Express.js
 - EJS (Frontend)
@@ -29,7 +29,7 @@ Users draw a digit (0–9) on a canvas, and the system predicts the digit locall
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 ```
 handwritten-digit-ai/
 └── server/
@@ -43,20 +43,20 @@ handwritten-digit-ai/
 ```
 ---
 
-## ⚙️ Installation
+## Installation
 
-### 1️⃣ Clone the repository
+### Clone the repository
 ```bash
 git clone https://github.com/notysozu/Handwritten-Digit-Detection-AI.git
 cd handwritten-digit-ai
 ```
 
-### 2️⃣ Install dependencies
+### Install dependencies
 ```bash
 npm install
 ```
 
-### 🧠 Training the Model (IMPORTANT)
+### Training the Model (IMPORTANT)
 
 The model is not included in Git to keep the repo clean.
 You must train it once before running the app.
@@ -68,3 +68,8 @@ This will:
 1. Load the MNIST dataset
 2. Train a high-accuracy CNN (~99.5%)
 3. Save the model locally to:
+
+### Start the application 
+```bash
+node index.js
+```
